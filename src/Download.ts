@@ -1,6 +1,6 @@
 import { Album, Track, Playlist, Results, checkType, checkPath } from './index'
 import NodeID3 from 'node-id3'
-const ytdl = require("@distube/ytdl-core");
+const ytdl = require("ytdl-core");
 import axios from 'axios'
 import { unlinkSync } from 'fs'
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;

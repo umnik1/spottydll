@@ -13,8 +13,10 @@
     "docs": "typedoc src/index.ts"
   },
   "files": [
+    "src",
     "dist",
-    "types"
+    "types",
+    "tsconfig.json"
   ],
   "keywords": [
     "spotify",
@@ -25,15 +27,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/thanatoslayer6/spottydl.git"
+    "url": "https://github.com/umnik1/spottydll.git"
   },
   "author": "Thanatoslayer6",
   "license": "MIT",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "axios": "^1.6.7",
     "fluent-ffmpeg": "^2.1.2",
     "node-id3": "^0.2.6",
-    "ytdl-core": "^4.11.5",
+    "ytdl-core": "npm:@distube/ytdl-core@^4.16.4",
     "ytmusic-api": "^5.2.1"
   },
   "devDependencies": {

@@ -1,9 +1,11 @@
 import { Album, Track, Playlist, Results, checkType, checkPath } from './index'
 import NodeID3 from 'node-id3'
-import ytdl from 'ytdl-core'
-import ffmpeg from 'fluent-ffmpeg'
+const ytdl = require("@distube/ytdl-core");
 import axios from 'axios'
 import { unlinkSync } from 'fs'
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 // Private Methods
 const dl_track = async (id: string, filename: string): Promise<boolean> => {

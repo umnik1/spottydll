@@ -92,15 +92,21 @@ export const getAlbum = async (url: string = ''): Promise<Album | string> => {
 
         // Search the album
         await ytm.initialize()
-        let alb = await ytm.searchAlbums(`${tags.artist} - ${tags.name}`)
-        let yt_tracks: any | undefined = await get_album_playlist(alb[0].playlistId) // Get track ids from youtube
-        spTrk.tracksV2.items.forEach((i: any, n: number) => {
+        // let alb = await ytm.searchAlbums(`${tags.artist} - ${tags.name}`)
+        // let yt_tracks: any | undefined = await get_album_playlist(alb[0].playlistId) // Get track ids from youtube
+        const trackPromises = await spTrk.tracksV2.items.map(async (i: any, n: any) => {
+            const title = i.track.name;
+            const artist =
+                i.track.artists.items.map((i: any) => i.profile.name).join(', ');
+            let yt_trk = await ytm.searchSongs(`${title} - ${artist}`);
             tags.tracks.push({
-                title: i.track.name,
-                id: yt_tracks[n].playlistVideoRenderer.videoId,
+                title: title,
+                id: yt_trk[0].videoId,
                 trackNumber: i.track.trackNumber
-            })
+            });
         })
+
+        Promise.all(trackPromises);
 
         return tags
     } catch (err: any) {

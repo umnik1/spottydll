@@ -38,6 +38,7 @@
     "axios": "^1.6.7",
     "fluent-ffmpeg": "^2.1.2",
     "node-id3": "^0.2.6",
+    "youtube-dl-exec": "^3.0.16",
     "ytdl-core": "npm:@distube/ytdl-core@^4.16.4",
     "ytmusic-api": "^5.2.1"
   },

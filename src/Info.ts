@@ -100,7 +100,7 @@ export const getAlbum = async (url: string = ''): Promise<Album | string> => {
                 i.track.artists.items.map((i: any) => i.profile.name).join(', ');
             let yt_trk = await ytm.searchSongs(`${title} - ${artist}`);
             tags.tracks.push({
-                title: title,
+                title: title.replace(/[.,#!:?]/g, ''),
                 id: yt_trk[0].videoId,
                 trackNumber: i.track.trackNumber
             });
@@ -141,7 +141,7 @@ export const getPlaylist = async (url: string = ''): Promise<Playlist | string> 
                 let trackArtists = trk.itemV2.data.artists.items.map((i: any) => i.profile.name).join(', ')
                 let yt_trk = await ytm.searchSongs(`${trackTitle} - ${trackArtists}`)
                 return {
-                    title: trackTitle,
+                    title: trackTitle.replace(/[.,#!:?]/g, ''),
                     artist: trackArtists,
                     // year: Does not exist when scraping
                     album: trk.itemV2.data.albumOfTrack.name,

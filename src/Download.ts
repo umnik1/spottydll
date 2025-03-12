@@ -6,38 +6,28 @@ import { unlinkSync } from 'fs'
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
-const { dlAudio } = require("youtube-exec");
+const youtubedl = require('youtube-dl-exec')
 
 // Private Methods
 const dl_track = async (id: string, filename: string): Promise<boolean> => {
-    return await new Promise<boolean>((resolve, reject) => {
-        dlAudio({
-            url: "https://www.youtube.com/watch?v=" + id,
-            folder: "downloads", // optional, default: "youtube-exec"
-            filename: filename, // optional, default: video title
-            quality: "best", // or "lowest"; default: "best"
-          })
-        .then(() => {
-            console.log("Audio downloaded successfully! 🔊🎉");
+    return await new Promise((resolve, reject) => {
+        youtubedl('https://www.youtube.com/watch?v=' + id, {
+            audioFormat: 'mp3',
+            extractAudio: true,
+            audioQuality: 0,
+            output: filename,
+            addMetadata: true,
+            addHeader: ['referer:youtube.com', 'user-agent:googlebot']
+        })
+        .then((output: any) => {
+            console.log(output);
             resolve(true);
         })
-        .catch((err: any) => {
+            .catch((err: any) => {
             console.error("An error occurred:", err.message);
             resolve(false);
         });
-
-        // ffmpeg(ytdl(id, { quality: 'highestaudio', filter: 'audioonly' }))
-        //     .audioBitrate(128)
-        //     .save(filename)
-        //     .on('error', (err: any) => {
-        //         console.error(`Failed to write file (${filename}): ${err}`)
-        //         //unlinkSync(filename)
-        //         resolve(false)
-        //     })
-        //     .on('end', () => {
-        //         resolve(true)
-        //     })
-    })
+    });
 }
 
 const dl_album_normal = async (obj: Album, oPath: string, tags: any): Promise<Results[]> => {

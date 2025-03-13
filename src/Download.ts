@@ -3,9 +3,6 @@ import NodeID3 from 'node-id3'
 const ytdl = require("ytdl-core");
 import axios from 'axios'
 import { unlinkSync } from 'fs'
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath(ffmpegPath);
 const youtubedl = require('youtube-dl-exec')
 
 // Private Methods
@@ -51,44 +48,6 @@ const dl_album_normal = async (obj: Album, oPath: string, tags: any): Promise<Re
         }
     }
     return Results
-}
-
-const dl_album_fast = async (obj: Album, oPath: string, tags: any): Promise<Results[]> => {
-    let Results: any = []
-    let i: number = 0 // Variable for specifying the index of the loop
-    return await new Promise<Results[]>(async (resolve, reject) => {
-        for await (let res of obj.tracks) {
-            let sanitizedTitle: string = res.title.replace(/[/\\]/g, ' ')
-            let filename = `${oPath}${sanitizedTitle}.mp3`
-            ffmpeg(ytdl(res.id, { quality: 'highestaudio', filter: 'audioonly' }))
-                .audioBitrate(128)
-                .save(filename)
-                .on('error', (err: any) => {
-                    tags.title = res.name // Tags
-                    tags.trackNumber = res.trackNumber
-                    Results.push({ status: 'Failed (stream)', filename: filename, id: res.id, tags: tags })
-                    console.error(`Failed to write file (${filename}): ${err}`)
-                    unlinkSync(filename)
-                    // reject(err)
-                })
-                .on('end', () => {
-                    i++
-                    tags.title = res.name
-                    tags.trackNumber = res.trackNumber
-                    let tagStatus = NodeID3.update(tags, filename)
-                    if (tagStatus) {
-                        console.log(`Finished: ${filename}`)
-                        Results.push({ status: 'Success', filename: filename })
-                    } else {
-                        console.log(`Failed to add tags: ${filename}`)
-                        Results.push({ status: 'Failed (tags)', filename: filename, id: res.id, tags: tags })
-                    }
-                    if (i == obj.tracks.length) {
-                        resolve(Results)
-                    }
-                })
-        }
-    })
 }
 // END
 
@@ -163,11 +122,8 @@ export const downloadAlbum = async (
             }
         }
         let oPath = checkPath(outputPath)
-        if (sync) {
-            return await dl_album_normal(obj, oPath, tags)
-        } else {
-            return await dl_album_fast(obj, oPath, tags)
-        }
+        
+        return await dl_album_normal(obj, oPath, tags)
     } catch (err: any) {
         return `Caught: ${err}`
     }

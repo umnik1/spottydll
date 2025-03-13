@@ -5,6 +5,17 @@ import axios from 'axios'
 import { unlinkSync } from 'fs'
 const youtubedl = require('youtube-dl-exec')
 
+//UNCOMMENT FOR USE IN ELECTRONJS
+
+// const { create: createYoutubeDl } = require('youtube-dl-exec')
+
+// const appRootDir = require('app-root-dir').get();
+
+// let fullurl = appRootDir + "/../app.asar.unpacked/node_modules/youtube-dl-exec/bin/youtube-dl.exe"
+
+// const youtubedl = createYoutubeDl(fullurl)
+
+
 // Private Methods
 const dl_track = async (id: string, filename: string): Promise<boolean> => {
     return await new Promise((resolve, reject) => {

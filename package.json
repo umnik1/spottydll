@@ -34,6 +34,7 @@
   "author": "Thanatoslayer6",
   "license": "MIT",
   "dependencies": {
+    "app-root-dir": "^1.0.2",
     "axios": "^1.6.7",
     "node-id3": "^0.2.6",
     "youtube-dl-exec": "^3.0.16",

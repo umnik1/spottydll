@@ -9,6 +9,7 @@ const node_id3_1 = __importDefault(require("node-id3"));
 const ytdl = require("ytdl-core");
 const axios_1 = __importDefault(require("axios"));
 const youtubedl = require('youtube-dl-exec');
+const ffmpeg = require('@ffmpeg-installer/ffmpeg');
 // Private Methods
 const dl_track = async (id, filename) => {
     return await new Promise((resolve, reject) => {
@@ -18,7 +19,8 @@ const dl_track = async (id, filename) => {
             audioQuality: 0,
             output: filename,
             addMetadata: true,
-            addHeader: ['referer:youtube.com', 'user-agent:googlebot']
+            addHeader: ['referer:youtube.com', 'user-agent:googlebot'],
+            ffmpegLocation: ffmpeg.path
         })
             .then((output) => {
             console.log(output);

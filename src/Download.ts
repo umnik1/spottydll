@@ -4,6 +4,7 @@ const ytdl = require("ytdl-core");
 import axios from 'axios'
 import { unlinkSync } from 'fs'
 const youtubedl = require('youtube-dl-exec')
+const ffmpeg = require('@ffmpeg-installer/ffmpeg');
 
 // Private Methods
 const dl_track = async (id: string, filename: string): Promise<boolean> => {
@@ -14,7 +15,8 @@ const dl_track = async (id: string, filename: string): Promise<boolean> => {
             audioQuality: 0,
             output: filename,
             addMetadata: true,
-            addHeader: ['referer:youtube.com', 'user-agent:googlebot']
+            addHeader: ['referer:youtube.com', 'user-agent:googlebot'],
+            ffmpegLocation: ffmpeg.path
         })
         .then((output: any) => {
             console.log(output);

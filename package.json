@@ -11,8 +11,8 @@
     "watch": "tsc -w",
     "format": "prettier --config .prettierrc 'src/*.ts' --write",
     "docs": "typedoc src/index.ts",
-    "install": "npm run build",
-    "prepare": "npm run build"
+    "install": "npm install && npm run build",
+    "prepare": "npm install && npm run build"
   },
   "files": [
     "src",
